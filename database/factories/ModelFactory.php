@@ -29,7 +29,7 @@ $factory->define(\App\Thread::class, function(Faker\Generator $faker) {
         'user_id' => function() {
             return factory(\App\User::class)->create()->id;
         },
-        'title' => $faker->title,
+        'title' => $faker->sentence,
         'body' => $faker->paragraph
    ];
 
