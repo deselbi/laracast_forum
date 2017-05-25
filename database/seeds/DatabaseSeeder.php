@@ -12,5 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        $threads = factory(\App\Thread::class, 50)->create();
+        $threads->each(function($thread){factory(\App\Reply::class, 10)->create(['thread_id'=> $thread->id]); });
+
     }
 }
