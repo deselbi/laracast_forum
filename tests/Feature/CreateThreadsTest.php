@@ -47,4 +47,18 @@ class CreateThreadsTest extends TestCase
         $this->get(route('threads.index'))
             ->assertDontSee($thread->body);
     }
+
+
+    /**
+     * @test
+     */
+    public function guest_cant_see_create_thread_page() {
+
+        // create new thread
+        $thread = make(Thread::class);
+
+        $response = $this->post(route('threads.store'), $thread->toArray());
+        $response->assertRedirect(route('login'));
+
+    }
 }
