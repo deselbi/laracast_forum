@@ -27,7 +27,7 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                @if(auth()->check())
-                    <form method="post" action="{{ route('thread.replies',[$thread->id]) }}" >
+                    <form method="post" action="{{ route('threads.replies',[$thread->id]) }}" >
                         {{ csrf_field() }}
                         <div class="form-group">
                             <textarea name="body" id="body" class="form-control" placeholder="Say something..."> </textarea>
