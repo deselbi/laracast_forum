@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateThreadsTest extends TestCase
 {
@@ -22,7 +20,7 @@ class CreateThreadsTest extends TestCase
 
         $this->actingAs(factory(User::class)->create());
         // create new thread and it should be redirected to that thread page
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
         $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('threads.show', [1]));
 
@@ -40,7 +38,7 @@ class CreateThreadsTest extends TestCase
     public function guest_cant_create_thread() {
 
         // create new thread
-        $thread = factory(Thread::class)->make();
+        $thread = make(Thread::class);
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertRedirect(route('login'));

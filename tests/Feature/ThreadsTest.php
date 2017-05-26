@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\Reply;
 use App\Thread;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ThreadsTest extends TestCase
 {
@@ -17,7 +15,7 @@ class ThreadsTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->thread = factory(Thread::class)->create();
+        $this->thread = create(Thread::class);
     }
 
 
