@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Reply;
 use App\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -10,20 +11,28 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ThreadsTest extends TestCase
 {
+    public $thread;
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->thread = factory(Thread::class)->create();
+    }
+
 
     /**
      * @test
      */
     public function a_user_can_browsw_threads()
     {
-        $thread = factory(Thread::class)->create();
+
         $response = $this->get('/threads');
 
         $response->assertStatus(200);
 
-        $response->assertSee($thread->title)
-            ->assertSee($thread->body);
+        $response->assertSee($this->thread->title)
+            ->assertSee($this->thread->body);
     }
 
     /**
@@ -31,10 +40,20 @@ class ThreadsTest extends TestCase
      */
     public function a_user_can_browse_a_thread_by_id(){
 
-        $thread = factory(Thread::class)->create();
-        $response = $this->get('/threads/'.$thread->id);
-        $response->assertStatus(200);
-        $response->assertSee($thread->title);
 
+        $response = $this->get('/threads/'.$this->thread->id);
+        $response->assertStatus(200)
+            ->assertSee($this->thread->title);
+
+    }
+
+    /** @test */
+    public function a_user_can_read_repies_to_threads()
+    {
+        $reply = factory(Reply::class)->create(['thread_id'=> $this->thread->id]);
+
+        $response = $this->get('/threads/'.$this->thread->id);
+        $response->assertStatus(200)
+            ->assertSee($reply->body);
     }
 }
