@@ -18,7 +18,7 @@ class CreateThreadsTest extends TestCase
     {
         // signed user
 
-        $this->actingAs(factory(User::class)->create());
+        $this->signIn();
         // create new thread and it should be redirected to that thread page
         $thread = make(Thread::class);
         $threadPath = route('threads.showwithslug', [$thread->channel->slug, 1]);
@@ -32,6 +32,30 @@ class CreateThreadsTest extends TestCase
         $response->assertSee($thread->body);
     }
 
+
+    /** @test */
+
+    function to_crate_thread_title_is_required()
+    {
+        $response = $this->publishThread(['title' => null]);
+        $response->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+
+    function to_crate_thread_body_is_required()
+    {
+        $response = $this->publishThread(['body' => null]);
+        $response->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+
+    function to_crate_thread_valid_chanell_is_required()
+    {
+        $response = $this->publishThread(['channel_id' => 777777]);
+        $response->assertSessionHasErrors('channel_id');
+    }
 
     /**
      * @test
@@ -61,5 +85,19 @@ class CreateThreadsTest extends TestCase
         $response = $this->post(route('threads.store'), $thread->toArray());
         $response->assertRedirect(route('login'));
 
+    }
+
+    /**
+     * @param $attributes
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function publishThread($attributes): \Illuminate\Foundation\Testing\TestResponse
+    {
+// signed user
+        $this->signIn();
+        // create new thread and it should be redirected to that thread page
+        $thread = make(Thread::class, $attributes);
+        $response = $this->post(route('threads.store'), $thread->toArray());
+        return $response;
     }
 }
