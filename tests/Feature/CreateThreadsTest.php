@@ -21,12 +21,13 @@ class CreateThreadsTest extends TestCase
         $this->actingAs(factory(User::class)->create());
         // create new thread and it should be redirected to that thread page
         $thread = make(Thread::class);
+        $threadPath = route('threads.showwithslug', [$thread->channel->slug, 1]);
         $this->post(route('threads.store'), $thread->toArray())
-            ->assertRedirect(route('threads.show', [1]));
+            ->assertRedirect($threadPath);
 
 
         // new thread it should have id 1 and should be visible
-        $response = $this->get(route('threads.show', [1]));
+        $response = $this->get($threadPath);
 
         $response->assertSee($thread->body);
     }

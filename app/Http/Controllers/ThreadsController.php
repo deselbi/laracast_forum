@@ -12,7 +12,7 @@ class ThreadsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show', 'showwithslug']);
     }
 
 
@@ -48,6 +48,7 @@ class ThreadsController extends Controller
         $thread = Thread::create(
             [
                 'user_id' => auth()->id(),
+                'channel_id' => request('channel_id'),
                 'title' => request('title'),
                 'body' => request('body')
             ]
@@ -67,6 +68,17 @@ class ThreadsController extends Controller
         return view('threads.show', compact('thread'));
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Thread  $thread
+     * @return \Illuminate\Http\Response
+     */
+    public function showwithslug($channel, Thread $thread)
+    {
+        return view('threads.show', compact('thread'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
