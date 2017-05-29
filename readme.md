@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://travis-ci.org/deselbi/Icy-Whisper"><img src="https://travis-ci.org/deselbi/Icy-Whisper.svg" alt="Build Status"></a>
+<a href="https://travis-ci.org/deselbi/laracast_forum"><img src="https://travis-ci.org/deselbi/laracast_forum.svg" alt="Build Status"></a>
 
 
-## Icy Whisper
+## Laracast Forum Practice
