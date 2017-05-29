@@ -1,8 +1,7 @@
 language: php
 php:
-  - 7.0
   - 7.1
-  - 5.6
+
 
 env:
   global:
@@ -14,9 +13,9 @@ git:
 matrix:
   fast_finish: true
   include:
-    - php: 5.6
+    - php: 7.1
       env: setup=lowest
-    - php: 5.6
+    - php: 7.1
       env: setup=stable
 
 sudo: false
