@@ -71,7 +71,7 @@ class ParticipateInForum extends TestCase
      */
     public function publishReply($attributes = []): \Illuminate\Foundation\Testing\TestResponse
     {
-// authenticated user
+        // authenticated user
         $this->signIn();
         //  thread exists
         $thread = create(Thread::class);

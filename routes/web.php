@@ -22,10 +22,13 @@ Route::get('/home', 'HomeController@index');
 //Route::get('/threads', 'ThreadsController@index');
 //Route::get('/threads/{thread}', 'ThreadsController@show');
 
+
 Route::resource('threads','ThreadsController');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@showwithslug')->name('threads.showwithslug');
 
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('threads.replies');
+
+Route::get('/chanells/{channel}', 'ThreadsController@index')->name('threads.by-chanell');
 
 
 
