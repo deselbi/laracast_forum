@@ -74,19 +74,20 @@ class ThreadsController extends Controller
      */
     public function show(Thread $thread)
     {
-        return view('threads.show', compact('thread'));
+        return $this->showThreadWithReplies($thread);
     }
 
 
     /**
-     * Display the specified resource.
+     * show allias for route with slug
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function showwithslug($channel, Thread $thread)
     {
-        return view('threads.show', compact('thread'));
+        return $this->showThreadWithReplies($thread);
+
     }
     /**
      * Show the form for editing the specified resource.
@@ -137,5 +138,15 @@ class ThreadsController extends Controller
 
         $threads = $builder->filter($filter)->get();
         return $threads;
+    }
+
+    /**
+     * @param Thread $thread
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    protected function showThreadWithReplies(Thread $thread)
+    {
+        $replies = $thread->replies()->paginate(20);
+        return view('threads.show', compact('thread', 'replies'));
     }
 }
