@@ -19,6 +19,12 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+
+    <style>
+
+        .level{ display: flex; aligne-items: center;}
+        .flex { flex: 1}
+    </style>
 </head>
 <body>
     <div id="app">

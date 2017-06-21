@@ -86,4 +86,26 @@ class ThreadsTest extends TestCase
 
 
     }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_popularity()
+    {
+
+        $treadWithTwoReplies = create(Thread::class);
+
+        create(Reply::class, ['thread_id'=> $treadWithTwoReplies->id], 2);
+
+
+        $treadWithThreeReplies = create(Thread::class);
+
+        create(Reply::class, ['thread_id'=> $treadWithThreeReplies->id], 3);
+
+
+
+
+
+        $response = $this->getJson('threads?popular=1')->json();
+
+        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+    }
 }
