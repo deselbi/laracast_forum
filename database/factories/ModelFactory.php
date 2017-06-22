@@ -62,3 +62,19 @@ $factory->define(\App\Channel::class, function(Faker\Generator $faker) {
 
 });
 
+
+$factory->define(\App\Favorite::class, function(Faker\Generator $faker) {
+
+    return [
+        'user_id' => function() {
+            return factory(\App\User::class)->create()->id;
+        },
+
+        'favorited_id'=> function() {
+            return factory(\App\Reply::class)->create()->id;
+        },
+
+        'favorited_type' => \App\Reply::class
+    ];
+
+});

@@ -31,5 +31,4 @@ Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('threa
 Route::get('/chanells/{channel}', 'ThreadsController@index')->name('threads.by-chanell');
 
 
-
-
+Route::post('/favorites/{id}/{type}', 'FavoritesController@store');

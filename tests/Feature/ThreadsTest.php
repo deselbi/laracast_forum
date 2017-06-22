@@ -101,9 +101,6 @@ class ThreadsTest extends TestCase
         create(Reply::class, ['thread_id'=> $treadWithThreeReplies->id], 3);
 
 
-
-
-
         $response = $this->getJson('threads?popular=1')->json();
 
         $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
