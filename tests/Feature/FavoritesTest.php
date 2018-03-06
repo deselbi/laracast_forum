@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Reply;
+use App\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -22,13 +23,30 @@ class FavoritesTest extends TestCase
 
         // user post to 'favorite' endpoint
         $response = $this->post('favorites/'. $reply->id . '/reply')
-            ->assertStatus(200);
+            ->assertStatus(302);
 
         // it shouild be recorced in database
         $this->assertCount(1, $reply->favorites, $response->getContent());
 
     }
 
+    /** @test */
+    public function an_authenticated_user_can_favorite_a_thread()
+    {
+
+        $thread = create(Thread::class);
+
+        // authenticated user
+        $this->signIn();
+
+        // user post to 'favorite' endpoint
+        $response = $this->post('favorites/'. $thread->id . '/thread')
+            ->assertStatus(302);
+
+        // it shouild be recorced in database
+        $this->assertCount(1, $thread->favorites, $response->getContent());
+
+    }
     /** @test */
     public function guest_can_not_favorite()
     {
@@ -50,10 +68,10 @@ class FavoritesTest extends TestCase
 
         // user post to 'favorite' endpoint
         $response = $this->post('favorites/'. $reply->id . '/reply')
-            ->assertStatus(200);
+            ->assertStatus(302);
 
         $response = $this->post('favorites/'. $reply->id . '/reply')
-            ->assertStatus(200);
+            ->assertStatus(302);
 
         // it shouild be recorced in database
         $this->assertCount(1, $reply->favorites, $response->getContent());

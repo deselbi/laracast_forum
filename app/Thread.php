@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use Favoritable;
     protected $guarded =[];
 
     protected static function boot()
@@ -67,5 +68,10 @@ class Thread extends Model
     public function scopeFilter($query, ThreadsFilters $filters)
     {
         return $filters->apply($query);
+    }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'favorited');
     }
 }
