@@ -6,7 +6,7 @@
             <div class="col-md-8 ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="{{route('threads.index') }}?by={{$thread->creator->name}}">{{$thread->creator->name}}</a> posted {{$thread->title}}
+                        <a href="{{route('profiles.show', $thread->creator->name) }}">{{$thread->creator->name}}</a> posted {{$thread->title}}
                     </div>
 
                     <div class="panel-body">

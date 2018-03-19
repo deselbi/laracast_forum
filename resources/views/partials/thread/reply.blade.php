@@ -4,7 +4,7 @@
 
         <h5 class="flex">
         <a href="#">
-            {{$reply->owner->name}}
+            <a href="{{route('profiles.show', $reply->owner->name) }}">{{$reply->owner->name}}</a>
         </a>
         said {{$reply->created_at->diffForHumans()}}
         </h5>
