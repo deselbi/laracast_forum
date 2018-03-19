@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Reply;
 use App\Thread;
 use App\User;
 use Tests\TestCase;
@@ -56,8 +57,7 @@ class CreateThreadsTest extends TestCase
         $response = $this->publishThread(['channel_id' => 777777]);
         $response->assertSessionHasErrors('channel_id');
     }
-
-    /**
+        /**
      * @test
      */
     public function guest_cant_create_thread() {
@@ -87,17 +87,82 @@ class CreateThreadsTest extends TestCase
 
     }
 
+    /** @test */
+
+    function user_can_delete_own_thread()
+    {
+        // signed user
+        $user = create(User::class);
+
+        $thread = create(Thread::class, ['user_id' => $user->id]);
+
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $this->assertDatabaseHas('threads', $thread->toArray());
+
+        $this->signIn($user);
+
+        $this->delete(route('threads.destroy', $thread->id))
+            ->assertStatus(302);
+
+        $this->assertDatabaseMissing('threads', $thread->toArray());
+
+        $this->assertDatabaseMissing('replies',$reply->toArray());
+
+    }
+
+
+    /** @test */
+
+    function guest_cant_delete_other_user_thread()
+    {
+        $owner = create(User::class);
+
+        $thread = create(Thread::class, ['user_id' => $owner->id]);
+
+        $this->delete(route('threads.destroy', $thread->id))
+            ->assertRedirect(route('login'));
+
+        $this->assertDatabaseHas('threads', $thread->toArray());
+    }
+
+
+
+    /** @test */
+
+    function user_cant_delete_other_user_thread()
+    {
+        $this->markTestIncomplete("TODO: implementend in next Episode.");
+        return;
+
+        $owner = create(User::class);
+
+        $thread = create(Thread::class, ['user_id' => $owner->id]);
+
+        $user = create(User::class);
+
+        $this->signIn($user);
+
+        $this->delete(route('threads.destroy', $thread->id))
+            ->assertStatus(403);
+
+        $this->assertDatabaseHas('threads', $thread->toArray());
+    }
+
+
     /**
      * @param $attributes
      * @return \Illuminate\Foundation\Testing\TestResponse
      */
-    public function publishThread($attributes): \Illuminate\Foundation\Testing\TestResponse
+    protected function publishThread($attributes): \Illuminate\Foundation\Testing\TestResponse
     {
-// signed user
+        // signed user
         $this->signIn();
         // create new thread and it should be redirected to that thread page
         $thread = make(Thread::class, $attributes);
+
         $response = $this->post(route('threads.store'), $thread->toArray());
+
         return $response;
     }
 }

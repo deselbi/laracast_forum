@@ -7,6 +7,7 @@ use App\Filters\ThreadsFilters;
 use App\Thread;
 use Illuminate\Http\Request;
 
+
 class ThreadsController extends Controller
 {
     /**
@@ -124,7 +125,10 @@ class ThreadsController extends Controller
      */
     public function destroy(Thread $thread)
     {
-        //
+
+        $thread->delete();
+        return redirect(route('threads.index'));
+
     }
 
     /**
